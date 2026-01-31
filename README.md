@@ -1,6 +1,6 @@
 # 🚀 Enterprise Angular Monorepo (Rsbuild + Turborepo + Micro Frontends)
 
-![Angular](https://img.shields.io/badge/Angular-v19_(Zoneless)-dd0031?style=flat&logo=angular)
+![Angular](https://img.shields.io/badge/Angular-v21_(Zoneless)-dd0031?style=flat&logo=angular)
 ![Rsbuild](https://img.shields.io/badge/Rsbuild-Rust_Bundler-orange?style=flat)
 ![Turborepo](https://img.shields.io/badge/Turborepo-Monorepo-EF4444?style=flat)
 ![Micro Frontends](https://img.shields.io/badge/Architecture-Micro_Frontends-blue?style=flat)
@@ -18,27 +18,23 @@ Orchestrated by **Turborepo**, this monorepo features intelligent caching, isola
 
 The system uses a **Source Dependency** pattern for internal libraries (Zero-Build) and **Module Federation** for application composition.
 
-```mermaid
-graph TD
-    subgraph "Host Application (Port 4200)"
-        Shell[Shell App]
-    end
-    
-    subgraph "Remote Application (Port 4201)"
-        Login[Login MFE]
-    end
-    
-    subgraph "Shared Packages (Source Code)"
-        UI[@auth/primitives-ui]
-        Logger[@auth/logger]
-    end
-
-    Shell -- Lazy Loads Routes --> Login
-    Shell -- Imports (Source) --> UI
-    Shell -- Imports (Source) --> Logger
-    Login -- Imports (Source) --> UI
-    Login -- Imports (Source) --> Logger
 ```
+  📦 Monorepo Architecture
+ ┣ 📂 apps (Applications)
+ ┃ ┣ 🚀 shell (Host App - Port 4200)
+ ┃ ┃ ┣ ⤵️ Lazy Loads: /login (from Remote)
+ ┃ ┃ ┣ 🔗 Imports: @auth/primitives-ui
+ ┃ ┃ ┗ 🔗 Imports: @auth/logger
+ ┃ ┃
+ ┃ ┗ 🔌 login (Remote App - Port 4201)
+ ┃   ┣ 🔗 Imports: @auth/primitives-ui
+ ┃   ┗ 🔗 Imports: @auth/logger
+ ┃
+ ┗ 📂 packages (Shared Source Code)
+   ┣ 🧱 @auth/primitives-ui (Zero-Build Library)
+   ┗ 📝 @auth/logger (Zero-Build Library)
+```
+
 # 🌟 Key Features
 ## ⚡Rus-Powered Performance Built with Rsbuild (Rspack).
 
@@ -76,12 +72,13 @@ Implemented using the ```@module-federation/rsbuild-plugin```.
 - Isomorphic: Works seamlessly in both Node.js (build time) and Browser (runtime).
 
 ## ⚖️ Performance Comparison
-- Feature,Standard Angular CLI (Webpack),This Architecture (Rsbuild)
-- Build Engine,Javascript (Webpack),Rust (Rspack)
-- Dev Server Start,2s - 10s (Scales linearly),< 300ms (Constant)
-- HMR Speed,1s - 3s,< 50ms
-- Monorepo DX,Complex angular.json paths,Simple pnpm workspaces
-- Micro Frontend,Requires external libraries,Native Plugin Support
+| Feature | Standard Angular CLI (Webpack) | This Architecture (Rsbuild) |
+| :--- | :--- | :--- |
+| **Build Engine** | Javascript (Webpack) | **Rust (Rspack)** |
+| **Dev Server Start** | 2s - 10s (Scales linearly) | **< 300ms (Constant)** |
+| **HMR Speed** | 1s - 3s | **< 50ms** |
+| **Monorepo DX** | Complex `angular.json` paths | **Simple `pnpm` workspaces** |
+| **Micro Frontend** | Requires external libraries | **Native Plugin Support** |
 
 ## 🚀 Getting Started
 Prerequisites
@@ -91,7 +88,7 @@ Prerequisites
 Installation
 1. Clone The Repository
 ```bash
-git clone [https://github.com/yourusername/angular-rsbuild-monorepo.git](https://github.com/yourusername/angular-rsbuild-monorepo.git)
+git clone [https://github.com/elhakimdev/angular-rspack-monorepo](https://github.com/elhakimdev/angular-rspack-monorepo)
 cd angular-rsbuild-monorepo
 ```
 
@@ -107,10 +104,11 @@ pnpm dev
 - Shell: http://localhost:4200
 ## 🛠 Build Pipeline & Environments
 The project uses a single-config strategy. The build command automatically injects the correct environment variables and optimizations based on NODE_ENV.
-Command,Environment,Source Maps,Minification,Use Case
-pnpm build:qa,QA,✅ Yes,✅ Yes,For Testers (Debuggable)
-pnpm build:staging,Staging,❌ No,✅ Yes,Pre-Production Simulation
-pnpm build:prod,Production,❌ No,✅ Aggressive,Live Deployment
+| Command | Environment | Source Maps | Minification | Use Case |
+| :--- | :--- | :--- | :--- | :--- |
+| `pnpm build:qa` | QA | ✅ Yes | ✅ Yes | For Testers (Debuggable) |
+| `pnpm build:staging` | Staging | ❌ No | ✅ Yes | Pre-Production Simulation |
+| `pnpm build:prod` | Production | ❌ No | ✅ Aggressive | Live Deployment |
 
 Run a specific build:
 ```bash
