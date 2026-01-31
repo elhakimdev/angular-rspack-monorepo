@@ -1,0 +1,15 @@
+{
+  "name": "shell",
+  "type": "module",
+  "scripts": {
+    "dev": "rsbuild dev",
+    "build": "rsbuild build",
+    "build:staging": "APP_ENV=staging rsbuild build",
+    "build:beta": "APP_ENV=beta rsbuild build",
+    "build:prod": "APP_ENV=production rsbuild build",
+    "preview:prod": "APP_ENV=production rsbuild preview"
+  },
+  "dependencies": {
+    "@auth/logger": "workspace:^"
+  }
+}

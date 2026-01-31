@@ -8,9 +8,30 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },
+  "dependencies": {
+    "@angular/animations": "^21.1.2",
+    "@angular/common": "^21.1.2",
+    "@angular/compiler": "^21.1.2",
+    "@angular/core": "^21.1.2",
+    "@angular/forms": "^21.1.2",
+    "@angular/platform-browser": "^21.1.2",
+    "@angular/platform-browser-dynamic": "^21.1.2",
+    "@angular/router": "^21.1.2",
+    "rxjs": "~7.8.2",
+    "tslib": "^2.8.1"
+  },
   "devDependencies": {
-    "prettier": "^3.7.4",
-    "turbo": "^2.8.0",
+    "@module-federation/rsbuild-plugin": "^0.8.12",
+    "@ng-rsbuild/plugin-angular": "^21.0.4",
+    "@rsbuild/core": "^1.7.2",
+    "@rsbuild/plugin-sass": "^1.5.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^22.19.7",
+    "postcss": "^8.5.6",
+    "prettier": "^3.8.1",
+    "sass": "^1.97.3",
+    "tailwindcss": "^4.1.18",
+    "turbo": "^2.8.1",
     "typescript": "5.9.2"
   },
   "packageManager": "pnpm@9.0.0",

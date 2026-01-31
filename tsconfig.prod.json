@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": false,
+    "declarationMap": false,
+    "removeComments": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  }
+}

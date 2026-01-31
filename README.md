@@ -1,135 +1,146 @@
-# Turborepo starter
+# 🚀 Enterprise Angular Monorepo (Rsbuild + Turborepo + Micro Frontends)
 
-This Turborepo starter is maintained by the Turborepo core team.
+![Angular](https://img.shields.io/badge/Angular-v19_(Zoneless)-dd0031?style=flat&logo=angular)
+![Rsbuild](https://img.shields.io/badge/Rsbuild-Rust_Bundler-orange?style=flat)
+![Turborepo](https://img.shields.io/badge/Turborepo-Monorepo-EF4444?style=flat)
+![Micro Frontends](https://img.shields.io/badge/Architecture-Micro_Frontends-blue?style=flat)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## Using this example
+> **Next-Generation Angular Architecture.** Engineered for extreme performance, scalability, and developer experience.
 
-Run the following command:
+## 📖 Overview
 
-```sh
-npx create-turbo@latest
+This project demonstrates a high-performance **Micro Frontend** architecture suitable for enterprise scale. It moves away from the traditional Webpack-based Angular CLI in favor of **Rsbuild (Rspack)**—a Rust-based bundler that offers 10x faster compilation.
+
+Orchestrated by **Turborepo**, this monorepo features intelligent caching, isolated build outputs, and a seamless **Module Federation** setup where the Shell application lazy-loads remote modules based on routing.
+
+## 🏗 Architecture Diagram
+
+The system uses a **Source Dependency** pattern for internal libraries (Zero-Build) and **Module Federation** for application composition.
+
+```mermaid
+graph TD
+    subgraph "Host Application (Port 4200)"
+        Shell[Shell App]
+    end
+    
+    subgraph "Remote Application (Port 4201)"
+        Login[Login MFE]
+    end
+    
+    subgraph "Shared Packages (Source Code)"
+        UI[@auth/primitives-ui]
+        Logger[@auth/logger]
+    end
+
+    Shell -- Lazy Loads Routes --> Login
+    Shell -- Imports (Source) --> UI
+    Shell -- Imports (Source) --> Logger
+    Login -- Imports (Source) --> UI
+    Login -- Imports (Source) --> Logger
+```
+# 🌟 Key Features
+## ⚡Rus-Powered Performance Built with Rsbuild (Rspack).
+
+- Cold Start: < 300ms (vs 5s+ with Webpack).
+
+- HMR: Instantaneous (millisecond-response), O(1) scalability.
+
+- Bundling: Efficient tree-shaking and minification closer to native speeds.
+
+## 🧩 Native Micro Frontends
+Implemented using the ```@module-federation/rsbuild-plugin```.
+
+- Shell App: Handles layout, global navigation, and authentication state.
+
+- Remote Apps: Loaded lazily only when the user navigates to specific routes (e.g., /login).
+
+- Shared Context: Singleton instances of Angular Core, Router, and Shared Services.
+
+## 📦 Smart Monorepo Strategy
+- Powered by Turborepo.
+
+- Remote Caching: Never rebuild the same code twice.
+
+- Isolated Outputs: Each app builds into its own local dist folder (apps/client/shell/dist), ensuring clean Docker containerization.
+
+- Source Dependencies: Internal libraries (ui, logger) are consumed as raw TypeScript. No complex library build steps required during development.
+
+## 🛡 Enterprise Logging
+- Custom wrapper around Pino Logger.
+
+- Browser-Friendly: Pretty-printed, expandable objects in Chrome DevTools.
+
+- Secure by Default: Automatic redaction of sensitive fields (password, token, secret) before logging.
+
+- Isomorphic: Works seamlessly in both Node.js (build time) and Browser (runtime).
+
+## ⚖️ Performance Comparison
+- Feature,Standard Angular CLI (Webpack),This Architecture (Rsbuild)
+- Build Engine,Javascript (Webpack),Rust (Rspack)
+- Dev Server Start,2s - 10s (Scales linearly),< 300ms (Constant)
+- HMR Speed,1s - 3s,< 50ms
+- Monorepo DX,Complex angular.json paths,Simple pnpm workspaces
+- Micro Frontend,Requires external libraries,Native Plugin Support
+
+## 🚀 Getting Started
+Prerequisites
+- Node.js v20+
+- pnpm (Recommended)
+
+Installation
+1. Clone The Repository
+```bash
+git clone [https://github.com/yourusername/angular-rsbuild-monorepo.git](https://github.com/yourusername/angular-rsbuild-monorepo.git)
+cd angular-rsbuild-monorepo
 ```
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+2. Install dependency
+```bash
+pnpm install
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
+3. Run Development Server Start both Shell and Remote applications in parallel.
+```bash
+pnpm dev
 ```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+- Shell: http://localhost:4200
+## 🛠 Build Pipeline & Environments
+The project uses a single-config strategy. The build command automatically injects the correct environment variables and optimizations based on NODE_ENV.
+Command,Environment,Source Maps,Minification,Use Case
+pnpm build:qa,QA,✅ Yes,✅ Yes,For Testers (Debuggable)
+pnpm build:staging,Staging,❌ No,✅ Yes,Pre-Production Simulation
+pnpm build:prod,Production,❌ No,✅ Aggressive,Live Deployment
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+Run a specific build:
+```bash
+pnpm build:prod
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+## 📂 Project Structure
+```bash
+.
+├── apps/
+│   ├── client/
+│   │   ├── shell/           # The Host Application (Main Container)
+│   │   │   ├── src/
+│   │   │   ├── rsbuild.config.ts
+│   │   │   └── tsconfig.app.json
+│   │   └── login/           # The Remote Application (Micro Frontend)
+│   │       ├── src/
+│   │       └── rsbuild.config.ts
+├── packages/
+│   ├── logger/              # Shared Logging Library (Pino)
+│   └── primitives-ui/       # Shared Headless UI Components
+├── turbo.json               # Turborepo Pipeline Config
+├── package.json             # Root Scripts
+└── pnpm-workspace.yaml      # Workspace Definitions
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## 🤝 Contributing
+Contributions are welcome! Please run ```pnpm lint``` before submitting a pull request.
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## 📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)

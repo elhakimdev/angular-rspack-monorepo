@@ -1,0 +1,40 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "es2022",
+    "lib": ["es2022", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "paths": {
+      "@auth/primitives-ui": [
+        "packages/client/primitives-ui/src/index.ts"
+      ],
+    },
+    "exclude": [
+      "node_modules"
+    ]
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "apps/client"
+    },
+    {
+      "path": "apps/server"
+    },
+    {
+      "path": "packages/client"
+    },
+    {
+      "path": "packages/server"
+    }
+  ],
+}

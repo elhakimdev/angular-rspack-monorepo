@@ -1,0 +1,21 @@
+{
+  "name": "@auth/primitives-ui",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "peerDependencies": {
+    "@angular/cdk": "^19.0.0",
+    "@angular/common": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "ng-primitives": "^0.106.1"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.7.5",
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

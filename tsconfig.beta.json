@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.staging.json",
+  "compilerOptions": {
+    "assumeChangesOnlyAffectDirectDependencies": true,
+    "preserveConstEnums": true
+  }
+}

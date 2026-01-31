@@ -1,0 +1,38 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/apps/client/shell",
+    "types": [
+      "node"
+    ],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "baseUrl": "./",
+    "paths": {
+      "@env": [
+        "./src/environments/environment.ts"
+      ],
+    },
+    "useDefineForClassFields": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "files": [
+    "src/index.ts",
+    "src/bootstrap.ts",
+    "rsbuild.config.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts", // Supaya types.d.ts tadi kebaca
+    "src/**/*.ts", // Supaya semua file TS kebaca
+    "src/**/*.html" // Supaya file HTML dianggap bagian project
+  ],
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictTemplates": true,
+    "preserveWhitespaces": true,
+  }
+}
