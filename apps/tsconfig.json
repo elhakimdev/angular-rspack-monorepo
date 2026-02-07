@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@auth/*": ["../packages/*/src"],
+      "@shell/*": ["./client/remotes/*/src"]
+    }
+  },
+  "include": ["client/**/*.ts"],
+  "exclude": ["**/*.spec.ts", "node_modules", "dist"]
+}
